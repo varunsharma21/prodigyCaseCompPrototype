@@ -229,6 +229,69 @@
       color: var(--text-muted);
     }
 
+    .profile-dropdown {
+      position: relative;
+    }
+
+    .profile-menu {
+      position: absolute;
+      right: 0;
+      top: 110%;
+      min-width: 190px;
+      background: var(--bg-card);
+      border-radius: 14px;
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.2);
+      padding: 6px 0;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(4px);
+      transition: opacity var(--transition-fast),
+        transform var(--transition-fast),
+        visibility var(--transition-fast);
+      z-index: 50;
+    }
+
+    .profile-dropdown.open .profile-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .profile-option {
+      width: 100%;
+      padding: 8px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      font-size: 13px;
+      color: var(--text-main);
+      transition: background var(--transition-fast),
+        padding-left var(--transition-fast);
+    }
+
+    .profile-option span {
+      pointer-events: none;
+    }
+
+    .profile-option-meta {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .profile-option:hover {
+      background: rgba(246, 178, 59, 0.08);
+      padding-left: 18px;
+    }
+
+    .profile-option.active {
+      background: rgba(246, 178, 59, 0.12);
+    }
+
     /* MAIN LAYOUT */
 
     .layout {
@@ -441,6 +504,8 @@
     .reward-footer {
       display: flex;
       justify-content: space-between;
+      align-items: center;
+      gap: 12px;
       font-size: 11px;
       color: var(--text-muted);
       border-top: 1px dashed #e0e3f0;
@@ -450,7 +515,8 @@
 
     .reward-footer strong {
       color: var(--text-main);
-      font-size: 13px;
+      font-size: 18px;
+      display: block;
     }
 
     /* STATS CARDS ROW */
@@ -467,10 +533,11 @@
       border-radius: 16px;
       border: 1px solid var(--border-subtle);
       box-shadow: var(--shadow-soft);
-      padding: 14px 16px 16px;
+      padding: 18px 16px;
       display: flex;
-      flex-direction: column;
-      gap: 4px;
+      align-items: center;
+      justify-content: center;
+      position: relative;
       cursor: default;
       transition: transform var(--transition-fast),
         box-shadow var(--transition-fast),
@@ -490,16 +557,22 @@
       text-transform: uppercase;
       letter-spacing: 0.16em;
       color: var(--text-muted);
+      position: absolute;
+      top: 10px;
+      left: 14px;
     }
 
     .stat-value {
-      font-size: 22px;
+      font-size: 26px;
       font-weight: 600;
     }
 
     .stat-caption {
       font-size: 12px;
       color: var(--text-muted);
+      position: absolute;
+      right: 14px;
+      bottom: 10px;
     }
 
     /* RECENT ACTIVITY */
@@ -644,25 +717,41 @@
           <div class="streak-dot"></div>
           <div>
             <div class="metric-label">Current Streak</div>
-            <div class="metric-value">12 Days</div>
+            <div class="metric-value" id="streakValue">12 Days</div>
           </div>
         </div>
 
         <div class="readiness">
-          <div class="readiness-ring">
-            <div class="readiness-ring-inner">75%</div>
+          <div class="readiness-ring" id="readinessRing">
+            <div class="readiness-ring-inner" id="readinessPercent">75%</div>
           </div>
           <div class="readiness-text">
             <span class="readiness-caption">Career Readiness</span>
-            <span class="readiness-status">Good</span>
+            <span class="readiness-status" id="readinessStatus">Good</span>
           </div>
         </div>
 
-        <button class="profile-chip">
-          <div class="profile-avatar">SS</div>
-          <div class="profile-name">Student Name</div>
-          <div class="profile-chevron">▾</div>
-        </button>
+        <div class="profile-dropdown" id="profileDropdown">
+          <button class="profile-chip" id="profileToggle" type="button">
+            <div class="profile-avatar" id="profileInitials">SS</div>
+            <div class="profile-name" id="profileName">Student Name</div>
+            <div class="profile-chevron">▾</div>
+          </button>
+          <div class="profile-menu" id="profileMenu">
+            <button class="profile-option active" data-student-id="0">
+              <span>Student Name</span>
+              <span class="profile-option-meta">Current</span>
+            </button>
+            <button class="profile-option" data-student-id="1">
+              <span>Alex Rivera</span>
+              <span class="profile-option-meta">Strategy Focus</span>
+            </button>
+            <button class="profile-option" data-student-id="2">
+              <span>Jordan Lee</span>
+              <span class="profile-option-meta">Finance Focus</span>
+            </button>
+          </div>
+        </div>
       </div>
     </header>
 
@@ -690,21 +779,21 @@
                 <span class="legend-swatch"></span>
                 <span>Strategy</span>
               </div>
-              <span class="skill-score">75</span>
+              <span class="skill-score" id="strategyScore">75</span>
             </div>
             <div class="skill-legend-row">
               <div class="skill-label">
                 <span class="legend-swatch"></span>
                 <span>Finance</span>
               </div>
-              <span class="skill-score">68</span>
+              <span class="skill-score" id="financeScore">68</span>
             </div>
             <div class="skill-legend-row">
               <div class="skill-label">
                 <span class="legend-swatch"></span>
                 <span>Communication</span>
               </div>
-              <span class="skill-score">82</span>
+              <span class="skill-score" id="communicationScore">82</span>
             </div>
             <div class="card-subtitle">
               Keep building on your strongest areas while focusing targeted practice
@@ -784,17 +873,17 @@
     <section class="stats-row">
       <article class="stat-card">
         <div class="stat-label">Modules Completed</div>
-        <div class="stat-value">12</div>
+        <div class="stat-value" id="modulesValue">12</div>
         <div class="stat-caption">This Month</div>
       </article>
       <article class="stat-card">
         <div class="stat-label">Active Mentors</div>
-        <div class="stat-value">3</div>
+        <div class="stat-value" id="mentorsValue">3</div>
         <div class="stat-caption">Available Now</div>
       </article>
       <article class="stat-card">
         <div class="stat-label">Study Hours</div>
-        <div class="stat-value">24</div>
+        <div class="stat-value" id="hoursValue">24</div>
         <div class="stat-caption">This Week</div>
       </article>
     </section>
@@ -838,17 +927,58 @@
   </div>
 
   <script>
-    // Radar chart configuration
+    const students = [
+      {
+        name: "Student Name",
+        initials: "SS",
+        streak: "12 Days",
+        readiness: 75,
+        readinessLabel: "Good",
+        scores: { strategy: 75, finance: 68, communication: 82 },
+        modules: 12,
+        mentors: 3,
+        hours: 24,
+      },
+      {
+        name: "Alex Rivera",
+        initials: "AR",
+        streak: "7 Days",
+        readiness: 62,
+        readinessLabel: "On Track",
+        scores: { strategy: 70, finance: 60, communication: 66 },
+        modules: 8,
+        mentors: 2,
+        hours: 16,
+      },
+      {
+        name: "Jordan Lee",
+        initials: "JL",
+        streak: "21 Days",
+        readiness: 89,
+        readinessLabel: "Excellent",
+        scores: { strategy: 82, finance: 90, communication: 78 },
+        modules: 18,
+        mentors: 4,
+        hours: 32,
+      },
+    ];
+
     const ctx = document.getElementById("skillRadar");
+    let skillChart = null;
+
     if (ctx) {
-      new Chart(ctx, {
+      skillChart = new Chart(ctx, {
         type: "radar",
         data: {
           labels: ["Strategy", "Finance", "Communication"],
           datasets: [
             {
               label: "Skill Score",
-              data: [75, 68, 82],
+              data: [
+                students[0].scores.strategy,
+                students[0].scores.finance,
+                students[0].scores.communication,
+              ],
               backgroundColor: "rgba(246, 178, 59, 0.22)",
               borderColor: "#f29c1f",
               borderWidth: 2,
@@ -889,6 +1019,100 @@
         },
       });
     }
+
+    function updateReadinessRing(percent) {
+      const ring = document.getElementById("readinessRing");
+      if (!ring) return;
+      const deg = (percent / 100) * 360;
+      ring.style.background = `conic-gradient(var(--accent-strong) 0 ${deg}deg, #edf1fb ${deg}deg 360deg)`;
+    }
+
+    function setActiveStudent(index) {
+      const student = students[index];
+      if (!student) return;
+
+      const streakValue = document.getElementById("streakValue");
+      const readinessPercent = document.getElementById("readinessPercent");
+      const readinessStatus = document.getElementById("readinessStatus");
+      const strategyScore = document.getElementById("strategyScore");
+      const financeScore = document.getElementById("financeScore");
+      const communicationScore = document.getElementById("communicationScore");
+      const modulesValue = document.getElementById("modulesValue");
+      const mentorsValue = document.getElementById("mentorsValue");
+      const hoursValue = document.getElementById("hoursValue");
+      const profileName = document.getElementById("profileName");
+      const profileInitials = document.getElementById("profileInitials");
+
+      if (streakValue) streakValue.textContent = student.streak;
+      if (readinessPercent) readinessPercent.textContent = `${student.readiness}%`;
+      if (readinessStatus) readinessStatus.textContent = student.readinessLabel;
+      if (strategyScore) strategyScore.textContent = student.scores.strategy;
+      if (financeScore) financeScore.textContent = student.scores.finance;
+      if (communicationScore)
+        communicationScore.textContent = student.scores.communication;
+      if (modulesValue) modulesValue.textContent = student.modules;
+      if (mentorsValue) mentorsValue.textContent = student.mentors;
+      if (hoursValue) hoursValue.textContent = student.hours;
+      if (profileName) profileName.textContent = student.name;
+      if (profileInitials) profileInitials.textContent = student.initials;
+
+      updateReadinessRing(student.readiness);
+
+      if (skillChart) {
+        skillChart.data.datasets[0].data = [
+          student.scores.strategy,
+          student.scores.finance,
+          student.scores.communication,
+        ];
+        skillChart.update();
+      }
+
+      const profileOptions =
+        document.querySelectorAll(".profile-option");
+      profileOptions.forEach((btn) => {
+        const id = parseInt(btn.getAttribute("data-student-id"), 10);
+        btn.classList.toggle("active", id === index);
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const dropdown = document.getElementById("profileDropdown");
+      const toggleBtn = document.getElementById("profileToggle");
+      const menu = document.getElementById("profileMenu");
+
+      if (toggleBtn && dropdown && menu) {
+        toggleBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          dropdown.classList.toggle("open");
+        });
+
+        menu.addEventListener("click", (e) => {
+          const target = e.target.closest(".profile-option");
+          if (!target) return;
+          const index = parseInt(
+            target.getAttribute("data-student-id"),
+            10
+          );
+          setActiveStudent(index);
+          dropdown.classList.remove("open");
+        });
+
+        document.addEventListener("click", (e) => {
+          if (!dropdown.contains(e.target)) {
+            dropdown.classList.remove("open");
+          }
+        });
+
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape") {
+            dropdown.classList.remove("open");
+          }
+        });
+      }
+
+      // Initialize base state (ensures ring gradient matches first student)
+      setActiveStudent(0);
+    });
   </script>
 </body>
 </html>
